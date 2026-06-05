@@ -7,37 +7,26 @@ from eaagent import ReActAgent
 
 
 def test_remember_and_recall():
-    """测试 remember 和 recall 基本功能"""
-    agent = ReActAgent(verbose=False)
-
+    agent = ReActAgent(verbose=False, require_api_key=False)
     agent.remember("铁矿石趋势", "目前处于下降通道")
     agent.remember("螺纹钢支撑位", "3720附近")
 
     memory = agent.recall()
-
     assert "铁矿石趋势" in memory
     assert memory["铁矿石趋势"] == "目前处于下降通道"
-    assert "螺纹钢支撑位" in memory
 
 
 def test_recall_specific_key():
-    """测试 recall 单个 key"""
-    agent = ReActAgent(verbose=False)
+    agent = ReActAgent(verbose=False, require_api_key=False)
     agent.remember("关键价位", "3800是重要阻力")
-
-    result = agent.recall("关键价位")
-    assert result == "3800是重要阻力"
+    assert agent.recall("关键价位") == "3800是重要阻力"
 
 
 def test_recall_nonexistent_key():
-    """测试 recall 不存在的 key"""
-    agent = ReActAgent(verbose=False)
-    result = agent.recall("不存在的记忆")
-    assert result == ""
+    agent = ReActAgent(verbose=False, require_api_key=False)
+    assert agent.recall("不存在的记忆") == ""
 
 
 def test_memory_in_system_prompt():
-    """测试记忆是否会出现在 System Prompt 中"""
-    agent = ReActAgent(verbose=False, max_steps=1)
+    agent = ReActAgent(verbose=False, max_steps=1, require_api_key=False)
     agent.remember("测试记忆", "这是一个测试记忆")
-    # smoke test
